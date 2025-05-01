@@ -1,0 +1,36 @@
+# Cache-uri Django
+*.pyc
+__pycache__/
+db.sqlite3-journal
+
+# Cache-uri pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Cache-uri generale
+.cache/
+*.cache
+
+# Loguri
+*.log
+logs/
+*.out
+*.err
+
+# Mediul virtual Python
+env/
+.venv/
+
+# Cache-uri și configurări IDE (opțional, pentru PyCharm, VSCode etc.)
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Fișiere temporare
+*.tmp
+*.temp
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

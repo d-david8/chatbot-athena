@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chatbot Athena</title>
+
+<script>
+  (function() {
+    var botId = '15a74890-b962-4d39-a31a-7364c2c0f3db';
+    var secretKey = 'ddf28dd3-1746-4e32-8f79-387b2aa7aad2';
+    var script = document.createElement('script');
+    script.src = 'http://127.0.0.1:8000/api/chatbot_widget/?bot_id=' + botId + '&secret_key=' + secretKey;
+    script.async = true;
+    document.head.appendChild(script);
+    script.onload = function() {
+        window.loadNewSettings(botId, secretKey);
+    };
+  })();
+</script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #009688;
+      color: #fff;
+      padding: 20px 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      flex: 1;
+    }
+
+    .intro {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .intro img {
+      max-width: 200px;
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .intro-text {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .additional-text {
+      margin-top: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #009688;
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #009688;
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .intro {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .intro-text {
+        text-align: center;
+      }
+
+      .additional-text {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#">Acasă</a></li>
+        <li><a href="#">Despre</a></li>
+        <li><a href="#">Funcționalități</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Chatbot Athena</h1>
+    <div class="intro">
+      <img src="login_image.png"Imagine Athena">
+      <div class="intro-text">
+        <p>
+          Platforma Athena reprezintă un sistem complex, alcătuit din două componente principale: frontend care reprezintă interfața vizibilă cu care interacționează utilizatorii și backend care constituie partea logică, responsabilă de gestionarea datelor, proceselor și integrărilor din infrastructura aplicației.
+        </p>
+        <p>
+          Frontend-ul include aplicația de gestionare a chatbotului și codul de integrare, care poate fi inclus cu ușurință în orice site sau aplicație, permițând interacțiunea directă a utilizatorilor finali cu chatbotul.
+        </p>
+      </div>
+    </div>
+
+    <div class="additional-text">
+      <p>
+        După instalarea platformei, este generat automat un cont de administrator care poate crea și gestiona alți utilizatori. Accesul este securizat prin autentificare cu utilizator și parolă, iar parolele noi sunt transmise automat prin e-mail.
+      </p>
+      <p>
+        Utilizatorii pot crea foldere, încărca documente și lansa procesul de extragere a conținutului, acesta devenind baza de cunoștințe pentru chatbot. De asemenea, pot modifica numele chatbotului, domeniul, stilul de răspuns și alți parametri pentru personalizare.
+      </p>
+      <p>
+        Platforma oferă o secțiune de istoric al conversațiilor și un tablou de bord cu statistici utile: număr de conversații, mesaje, durată medie etc. Interfața include și opțiuni pentru tema întunecată, iar administratorii pot selecta modelul AI folosit și configura nivelul de creativitate.
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Athena. Toate drepturile rezervate.
+  </footer>
+
+</body>
+</html>

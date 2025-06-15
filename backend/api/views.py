@@ -358,13 +358,12 @@ class ChatbotView(generics.ListCreateAPIView):
         conversation_id = request.data.get('conversation_id')
         prompt_settings = PromptSettings.objects.get(bot=1)
 
+        # daca nu exista o conversatie se creeaza una noua
         if not conversation_id:
             conversation_id = str(uuid4())
-
-        # Create a new conversation if it doesn't exist
         conversation, created = Conversation.objects.get_or_create(conversation_id=conversation_id)
 
-        # Add welcome message if the conversation is new
+        # daca conversatia este nou creaza un mesaj de bun venit
         if created:
             Message.objects.create(
                 conversation=conversation, 
@@ -372,35 +371,34 @@ class ChatbotView(generics.ListCreateAPIView):
                 content=prompt_settings.wellcome_message
                 )
 
-        # Add user message to the conversation
+        # daca exista deja conversatia se adauga mesajul utilizatorului
         if user_message:
             conversation_history = [
                 {"role": "user" if msg.sender == "user" else "assistant", "content": msg.content}
                 for msg in Message.objects.filter(conversation=conversation).order_by("timestamp")
             ]
-            # Save user message
+            # salveaza mesajul utilizatorului
             Message.objects.create(conversation=conversation, sender='user', content=user_message)
 
             try:
-                # Search for articles in MongoDB
+                # cauta articole relevante in baza de date MongoDB
                 articles = MongoDBUtils().advanced_search(user_message, limit=5)
             except Exception as e:
                 print(e)
                 articles = [{'title': 'Error', 'content': 'An error occurred while searching for articles.'}]
 
-            # Generate bot response
+            # genereaza raspunsul botului folosind OpenAI
             bot_response = OpenAIUtils().generate_response(conversation_history,articles, user_message)
 
-            # Save bot response
+            # salveaza raspunsul botului in baza de date
             Message.objects.create(conversation=conversation, sender='bot', content=bot_response)
         else:
             bot_response = prompt_settings.wellcome_message
-
+        # returneaza raspunsul botului si id-ul conversatiei
         response_data = {
             "conversation_id": conversation.conversation_id,
             "response": bot_response
         }
-
         return Response(response_data, status=status.HTTP_201_CREATED)
 
 

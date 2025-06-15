@@ -10,7 +10,6 @@ class OpenAIUtils:
     def openAiPromptForArticle(chunk):
         return f"""
             Scop: extrage articole din textul de mai jos și returnează-le într-un JSON valid, compact și curat.
-
             Instrucțiuni:
             1. Identifică articolele din textul de mai jos. Dacă există mai multe blocuri de conținut care pot fi considerate articole distincte, extrage-le separat.
             2. Pentru fiecare articol returnează un obiect JSON cu două câmpuri:
@@ -33,10 +32,8 @@ class OpenAIUtils:
     def extract_articles(chunk_list, user_id,user,folder_id, document_id):
         settings = OpenAISettings.objects.get(bot=1)
         client = OpenAI(api_key=settings.api_key)
-    
         json_response_list = []
         for chunk in chunk_list:
-            # Remove special characters
             chunk = re.sub(r'[\n\r\t]|\\n|\\t|\\\\', ' ', chunk)
             chunk = re.sub(r'\s{2,}', ' ', chunk)
             chunk = chunk.strip()
@@ -59,10 +56,7 @@ class OpenAIUtils:
             )
             dic_response = open_ai_response.model_dump()
             articles = dic_response["choices"][0]["message"]["content"]
-            log.logger.info("OpenAI response: ", articles)
-
             json_response_list.append(articles)
-
         articles_response = []
         for json_response_item in json_response_list:
             articles = json.loads(json_response_item)
@@ -88,26 +82,19 @@ class OpenAIUtils:
         return articles_response
 
 
-    # Method to generate response
+    # Methoda pentru a genera un răspuns folosind OpenAI
     @staticmethod
     def generate_response(conversation_history,articles, user_message):
-    
-        # Get OpenAI settings
         settings = OpenAISettings.objects.get(bot=1)
         prompt_settings = PromptSettings.objects.get(bot=1)
         client = OpenAI(api_key=settings.api_key)
         articlesString = "\n".join([f"{article['title']} {article['content']}" for article in articles])
-    
-        # Add articles to conversation history to provide context
-
+        # Prelucreaza conversația pentru a include doar ultimele 5 mesaje
         messages = conversation_history[-5:].copy()
-
         messages.append({"role": "user", "content": user_message})
-        
-        # Create messages
 
         bot_name = Bot.objects.get(id=1).name
-
+        # Setează parametrii de promptare
         company = prompt_settings.company is not None and prompt_settings.company or "Compania ta"
         domain = prompt_settings.domain is not None and prompt_settings.domain or "general"
         subdomains = prompt_settings.subdomain is not None and prompt_settings.subdomain or "general"
@@ -117,7 +104,7 @@ class OpenAIUtils:
         audience_level = prompt_settings.audience_level is not None and prompt_settings.audience_level or "începător"
         multi_language = prompt_settings.multi_language is not None and prompt_settings.multi_language or "română"
         accept_simple_chat = prompt_settings.accept_simple_chat is not None and prompt_settings.accept_simple_chat or "nu"
-
+        # Verifică dacă acceptă chat simplu
         if accept_simple_chat:
             simple_chat = (
                 "   Dacă întrebarea este una generală, simplă și conversațională precum:\n"
@@ -135,7 +122,7 @@ class OpenAIUtils:
                 "   Nu răspunde la întrebări informale sau conversaționale (ex. 'Ce faci?', 'Cine ești?').\n"
                 f"   Oferă răspunsuri doar dacă întrebarea ține strict de domeniul tău și de subiectele indicate. Refuză {tone.lower()} orice alt subiect.\n"
             )
-        
+        # Adaugă mesajul de sistem cu instrucțiunile  
         messages.append({
             "role": "system",
             "content": (
@@ -162,7 +149,6 @@ class OpenAIUtils:
                 f"{articlesString}"
             )
         })
-
         # Apelează API-ul OpenAI
         try:
             response = client.chat.completions.create(
@@ -172,8 +158,6 @@ class OpenAIUtils:
                 messages=messages,
             )
             response=response.model_dump()
-
             return response["choices"][0]["message"]["content"]
-        
         except Exception as e:
             return "Error: " + str(e)

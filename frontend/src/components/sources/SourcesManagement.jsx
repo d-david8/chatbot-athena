@@ -372,7 +372,7 @@ export default function SourcesManagement () {
               justifyContent: 'space-between',
             }}
           >
-            Foldere
+            Directoare
             <Tooltip title="Creează folder nou" placement="top">
               <IconButton
                 size="small"

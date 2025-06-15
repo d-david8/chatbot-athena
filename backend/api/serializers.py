@@ -157,27 +157,24 @@ class DocumentSerializer(serializers.ModelSerializer):
         return instance
         
     def extract_text(self, request):
+        # se identifica documentul
         document_path = f"{self.folder.path}/{self.name}"
         document_id = self.id
         folder_id = self.folder.id
-
         if not Path(document_path).exists():
             raise serializers.ValidationError("File does not exist", code=400)
-    
         if not OpenAISettings.objects.filter(bot=1).exists():
             raise serializers.ValidationError("OpenAI settings not found", code=400)
-        
         try:
+            # se extrage textul din document intr-o lista de fragmente
             content_list = DocumentUtils.extract_text_from_file(document_path)
-            log.logger.info(content_list)
+            # se obtin articolele pe baza fragmentelor cu ajutorul OpenAI 
             article_list = OpenAIUtils.extract_articles(content_list, request.user.id, request.user.username, folder_id, document_id)
+            # se salveaza articolele in MongoDB
             mongo_utils = MongoDBUtils()
-            log.logger.info("MongoDB connection established")
-            log.logger.info(article_list)
             res = mongo_utils.insert_articles(article_list)
         except Exception as e:
             raise serializers.ValidationError(f"Error extracting text: {e}", code=500)
-
         self.number_of_articles = res
         self.updated_by = request.user
         self.save()

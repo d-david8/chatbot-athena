@@ -51,10 +51,7 @@ urlpatterns = [
     path("openaisettings/", views.OpenAISettingsListCreateView.as_view(), name="openaisettings-list-create"),
     path("openaisettings/<int:pk>/", views.OpenAISettingsDetailView.as_view(), name="openaisettings-detail"),
     
-
-    # path("usersprofiles/", views.UserProfileViewSet.as_view({'get': 'list'}), name="userprofile-list"),
-    # path("usersprofiles/", views.UserProfileListCreateView.as_view(), name="userprofile-create"),
-
+    # Chatbot API
     path('chatbot/', views.ChatbotView.as_view(), name='chatbot'),
     path('chatbot_widget/', views.ChatbotWidgetView.as_view(), name='chatbot-widged'),
     path('chatbot_widget/<str:id>/', views.ChatbotWidgetView.as_view(), name='chatbot-widged'),

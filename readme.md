@@ -73,3 +73,7 @@ Pași de instalare:
     - pg_restore -U athena -d ATHENA -p 5433 -c ~/calea/la/fisier/athena_settings.dump din directorul chatbot-athena
 
 11. Pentru conectare se va utiliza userul admin si parola admin
+
+11. Se deschide platforma accesând link-ul: 
+
+12. Pentru conectare se va utiliza userul admin si parola admin

@@ -74,6 +74,6 @@ Pași de instalare:
 
 11. Pentru conectare se va utiliza userul admin si parola admin
 
-11. Se deschide platforma accesând link-ul: 
+11. Se deschide platforma accesând link-ul: http://localhost:5173/login
 
 12. Pentru conectare se va utiliza userul admin si parola admin
